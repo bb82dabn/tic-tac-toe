@@ -1,0 +1,157 @@
+// Profile Name: Budget, edited by omo-switch
+{
+  "$schema": "https://raw.githubusercontent.com/code-yeongyu/oh-my-opencode/master/assets/oh-my-opencode.schema.json",
+  "runtime_fallback": {
+    "enabled": true,
+    "retry_on_errors": [400, 429, 503, 529],
+    "max_fallback_attempts": 5,
+    "cooldown_seconds": 60,
+    "timeout_seconds": 30,
+    "notify_on_fallback": true
+  },
+  "agents": {
+    "sisyphus": {
+      "model": "anthropic/claude-sonnet-4-6",
+      "fallback_models": [
+        "opencode/kimi-k2.5-free",
+        "opencode-go/kimi-k2.5",
+        "opencode-go/glm-5",
+        "github-copilot/claude-sonnet-4.6"
+      ]
+    },
+    "hephaestus": {
+      "model": "github-copilot/gpt-5.2-codex",
+      "variant": "medium",
+      "fallback_models": [
+        "opencode/gpt-5.3-codex",
+        "opencode-go/kimi-k2.5",
+        "anthropic/claude-sonnet-4-6"
+      ]
+    },
+    "oracle": {
+      "model": "github-copilot/gpt-5.2",
+      "fallback_models": [
+        "opencode/gpt-5.2",
+        "google/antigravity-claude-sonnet-4-6-thinking",
+        "opencode-go/glm-5"
+      ]
+    },
+    "prometheus": {
+      "model": "google/antigravity-claude-sonnet-4-6-thinking",
+      "variant": "max",
+      "fallback_models": [
+        "anthropic/claude-sonnet-4-6",
+        "github-copilot/claude-sonnet-4.6",
+        "opencode/kimi-k2.5-free"
+      ]
+    },
+    "metis": {
+      "model": "google/antigravity-claude-sonnet-4-6-thinking",
+      "variant": "low",
+      "fallback_models": [
+        "opencode/kimi-k2.5-free",
+        "opencode-go/glm-5"
+      ]
+    },
+    "momus": {
+      "model": "google/antigravity-claude-sonnet-4-6-thinking",
+      "variant": "low",
+      "fallback_models": [
+        "github-copilot/gpt-5.2",
+        "opencode/kimi-k2.5-free"
+      ]
+    },
+    "librarian": {
+      "model": "opencode/glm-4.7-free",
+      "fallback_models": [
+        "opencode/kimi-k2.5-free",
+        "opencode-go/glm-5",
+        "github-copilot/grok-code-fast-1"
+      ]
+    },
+    "explore": {
+      "model": "opencode/gpt-5-nano",
+      "fallback_models": [
+        "opencode/kimi-k2.5-free",
+        "google/gemini-3-flash-preview",
+        "github-copilot/grok-code-fast-1"
+      ]
+    },
+    "multimodal-looker": {
+      "model": "google/gemini-3-flash-preview",
+      "fallback_models": [
+        "opencode/gemini-3-flash",
+        "opencode/kimi-k2.5-free"
+      ]
+    },
+    "atlas": {
+      "model": "opencode/kimi-k2.5-free",
+      "fallback_models": [
+        "opencode/glm-4.7-free",
+        "opencode-go/kimi-k2.5",
+        "github-copilot/grok-code-fast-1"
+      ]
+    }
+  },
+  "categories": {
+    "visual-engineering": {
+      "model": "google/antigravity-gemini-3.1-pro",
+      "variant": "low",
+      "fallback_models": [
+        "github-copilot/gemini-3.1-pro-preview",
+        "opencode/gemini-3.1-pro"
+      ]
+    },
+    "ultrabrain": {
+      "model": "github-copilot/gpt-5.2-codex",
+      "fallback_models": [
+        "opencode/gpt-5.3-codex",
+        "anthropic/claude-sonnet-4-6"
+      ]
+    },
+    "deep": {
+      "model": "github-copilot/gpt-5.2-codex",
+      "fallback_models": [
+        "opencode/gpt-5.3-codex",
+        "anthropic/claude-sonnet-4-6"
+      ]
+    },
+    "artistry": {
+      "model": "google/antigravity-gemini-3.1-pro",
+      "variant": "low",
+      "fallback_models": [
+        "github-copilot/gemini-3.1-pro-preview",
+        "opencode/gemini-3.1-pro"
+      ]
+    },
+    "quick": {
+      "model": "opencode/gpt-5-nano",
+      "fallback_models": [
+        "opencode/kimi-k2.5-free",
+        "google/gemini-3-flash-preview"
+      ]
+    },
+    "unspecified-low": {
+      "model": "opencode/kimi-k2.5-free",
+      "fallback_models": [
+        "opencode-go/kimi-k2.5",
+        "opencode-go/glm-5"
+      ]
+    },
+    "unspecified-high": {
+      "model": "anthropic/claude-sonnet-4-6",
+      "fallback_models": [
+        "google/antigravity-claude-sonnet-4-6-thinking",
+        "github-copilot/claude-sonnet-4.6"
+      ]
+    },
+    "writing": {
+      "model": "google/antigravity-gemini-3.1-pro",
+      "variant": "low",
+      "fallback_models": [
+        "opencode/kimi-k2.5-free",
+        "opencode-go/kimi-k2.5"
+      ]
+    }
+  }
+}
