@@ -4,8 +4,23 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Tic-Tac-Toe</title>
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>❌</text></svg>">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='16' fill='%23070b12'/%3E%3Cpath d='M25 25L75 75M75 25L25 75' stroke='%2322d3ee' stroke-width='12' stroke-linecap='round'/%3E%3C/svg%3E">
   <style>
+    :root {
+      color-scheme: dark;
+      --bg: #070b12;
+      --panel: #0b121b;
+      --panel-strong: #0f1b2a;
+      --line: #24465f;
+      --line-strong: #22d3ee;
+      --text: #f1fbff;
+      --muted: #b8d7e5;
+      --x: #67e8f9;
+      --o: #f9a8d4;
+      --win: #86efac;
+      --draw: #fde68a;
+    }
+
     * { margin: 0; padding: 0; box-sizing: border-box; }
 
     body {
@@ -14,81 +29,233 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
+      padding: clamp(1rem, 4vw, 3rem);
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-      background: #0f0f0f;
-      color: #e0e0e0;
+      background: var(--bg);
+      color: var(--text);
     }
 
     h1 {
-      font-size: 2rem;
-      margin-bottom: 0.5rem;
-      letter-spacing: 0.05em;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: clamp(2rem, 5vw, 3rem);
+      margin-bottom: 0.75rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      text-shadow: 0 0 4px rgba(34, 211, 238, 0.55);
     }
 
     #status {
-      font-size: 1.1rem;
-      margin-bottom: 1.5rem;
-      min-height: 1.5em;
-      color: #aaa;
+      min-height: 2rem;
+      margin-bottom: 1rem;
+      padding: 0.35rem 0.8rem;
+      border: 1px solid rgba(34, 211, 238, 0.35);
+      border-radius: 6px;
+      background: var(--panel);
+      color: var(--muted);
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: clamp(1rem, 2vw, 1.125rem);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
     }
 
-    #status.winner { color: #4ade80; font-weight: 600; }
-    #status.draw { color: #facc15; }
+    #status.winner {
+      border-color: var(--win);
+      background: #0d2017;
+      color: var(--win);
+      font-weight: 700;
+      box-shadow: 0 0 4px rgba(134, 239, 172, 0.45);
+    }
+
+    #status.draw {
+      border-color: var(--draw);
+      background: #211b0d;
+      color: var(--draw);
+      font-weight: 700;
+    }
 
     .board {
       display: grid;
-      grid-template-columns: repeat(3, 120px);
-      grid-template-rows: repeat(3, 120px);
-      gap: 6px;
+      grid-template-columns: repeat(3, minmax(88px, 120px));
+      grid-template-rows: repeat(3, minmax(88px, 120px));
+      gap: 8px;
+      padding: 10px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: #090f17;
+      box-shadow: 0 0 0 1px rgba(34, 211, 238, 0.12), 0 18px 40px rgba(0, 0, 0, 0.35);
     }
 
     .cell {
-      background: #1a1a2e;
-      border: 2px solid #2a2a4a;
-      border-radius: 12px;
-      font-size: 3rem;
-      font-weight: 700;
+      background: var(--panel-strong);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      color: var(--text);
+      aspect-ratio: 1;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: clamp(2.4rem, 9vw, 3.5rem);
+      font-weight: 800;
       cursor: pointer;
-      transition: background 0.15s, transform 0.1s;
+      transition: background-color 0.12s ease, border-color 0.12s ease, box-shadow 0.12s ease, transform 0.08s ease;
       display: flex;
       align-items: center;
       justify-content: center;
       user-select: none;
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.03);
     }
 
-    .cell:hover:not(.taken) {
-      background: #252545;
-      transform: scale(1.04);
+    .cell:hover:not(.taken),
+    .cell:focus-visible:not(.taken) {
+      background: #13263a;
+      border-color: var(--line-strong);
+      box-shadow: 0 0 4px rgba(34, 211, 238, 0.55), inset 0 0 0 1px rgba(34, 211, 238, 0.2);
     }
 
-    .cell.x { color: #60a5fa; }
-    .cell.o { color: #f472b6; }
-    .cell.win { border-color: #4ade80; background: #1a2e1a; }
+    .cell:focus-visible {
+      outline: 2px solid #e0f2fe;
+      outline-offset: 3px;
+    }
+
+    .cell:active:not(.taken) {
+      transform: scale(0.97);
+    }
+
+    .cell.taken {
+      cursor: default;
+    }
+
+    .cell.x {
+      color: var(--x);
+      text-shadow: 0 0 4px rgba(103, 232, 249, 0.6);
+    }
+
+    .cell.o {
+      color: var(--o);
+      text-shadow: 0 0 4px rgba(249, 168, 212, 0.55);
+    }
+
+    .cell.win {
+      border-color: var(--win);
+      background: #0d2518;
+      color: #d8ffe3;
+      box-shadow: 0 0 4px rgba(134, 239, 172, 0.65), inset 0 0 0 1px rgba(134, 239, 172, 0.22);
+    }
 
     #restart {
-      margin-top: 1.5rem;
-      padding: 0.6rem 2rem;
-      font-size: 1rem;
-      border: none;
+      min-height: 44px;
+      margin-top: 1.2rem;
+      padding: 0.7rem 2rem;
+      border: 1px solid #1fb6d9;
       border-radius: 8px;
-      background: #2563eb;
-      color: white;
+      background: #0e7490;
+      color: var(--text);
       cursor: pointer;
-      transition: background 0.15s;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 0.9rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      transition: background-color 0.12s ease, border-color 0.12s ease, box-shadow 0.12s ease, transform 0.08s ease;
     }
 
-    #restart:hover { background: #1d4ed8; }
+    #restart:hover,
+    #restart:focus-visible {
+      background: #155e75;
+      border-color: #67e8f9;
+      box-shadow: 0 0 4px rgba(34, 211, 238, 0.55);
+    }
+
+    #restart:focus-visible {
+      outline: 2px solid #e0f2fe;
+      outline-offset: 3px;
+    }
+
+    #restart:active {
+      transform: translateY(1px);
+    }
 
     .score {
       display: flex;
-      gap: 2rem;
-      margin-bottom: 1rem;
-      font-size: 1.1rem;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 0.85rem;
+      padding: 0.5rem 0.75rem;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: var(--panel);
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 0.875rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      box-shadow: 0 0 0 1px rgba(34, 211, 238, 0.1);
     }
 
-    .score span { opacity: 0.7; }
-    .score .x-score { color: #60a5fa; }
-    .score .o-score { color: #f472b6; }
+    .score > div {
+      min-width: 5.75rem;
+      display: flex;
+      justify-content: space-between;
+      gap: 0.65rem;
+      padding: 0.45rem 0.65rem;
+      border: 1px solid rgba(184, 215, 229, 0.22);
+      border-radius: 6px;
+      background: #08101a;
+    }
+
+    .score strong {
+      font-size: 1.35rem;
+      font-variant-numeric: tabular-nums;
+      line-height: 1;
+    }
+
+    .score span { color: var(--muted); }
+    .score .x-score { color: var(--x); }
+    .score .o-score { color: var(--o); }
+
+    @media (max-width: 440px) {
+      body {
+        justify-content: flex-start;
+        padding: max(1rem, env(safe-area-inset-top)) 1rem max(1rem, env(safe-area-inset-bottom));
+      }
+
+      h1 {
+        margin-top: 1rem;
+        font-size: 1.65rem;
+      }
+
+      .score,
+      .board,
+      #restart {
+        width: 100%;
+        max-width: 360px;
+      }
+
+      .score { gap: 0.5rem; }
+
+      .score > div {
+        min-width: 0;
+        flex: 1;
+      }
+
+      .board {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        grid-template-rows: repeat(3, 1fr);
+        gap: 7px;
+      }
+
+      .cell { min-height: 88px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        transition-duration: 0.01ms !important;
+        animation-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+
+      .cell:active:not(.taken),
+      #restart:active {
+        transform: none;
+      }
+    }
   </style>
 </head>
 <body>
@@ -98,8 +265,8 @@
     <span>|</span>
     <div class="o-score">O: <strong id="scoreO">0</strong></div>
   </div>
-  <div id="status">X goes first</div>
-  <div class="board" id="board"></div>
+  <div id="status" aria-live="polite">X goes first</div>
+  <div class="board" id="board" aria-label="Tic-Tac-Toe board"></div>
   <button id="restart">New Game</button>
 
   <script>
@@ -124,7 +291,17 @@
         const cell = document.createElement('div');
         cell.className = 'cell' + (val ? ` taken ${val.toLowerCase()}` : '');
         cell.textContent = val;
+        cell.tabIndex = gameOver || val ? -1 : 0;
+        cell.setAttribute('role', 'button');
+        cell.setAttribute('aria-disabled', gameOver || Boolean(val));
+        cell.setAttribute('aria-label', val ? `Cell ${i + 1}: ${val}` : `Cell ${i + 1}: empty, play ${turn}`);
         cell.addEventListener('click', () => play(i));
+        cell.addEventListener('keydown', (event) => {
+          if (event.key === 'Enter' || event.key === ' ') {
+            event.preventDefault();
+            play(i);
+          }
+        });
         boardEl.appendChild(cell);
       });
     }
